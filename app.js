@@ -1,0 +1,50 @@
+const statusEle = document.querySelector('.status');
+const headingEle = document.querySelector('.heading');
+const imgEle = document.getElementById('img');
+const mainContainer = document.querySelector('.container');
+
+
+// const checkConnection = ()=> {
+//     if(navigator.onLine) {
+//         statusEle.innerText = "Online";
+//         statusEle.style.color = 'green';
+//         imgEle.src = 'https://png.pngtree.com/png-vector/20190223/ourmid/pngtree-wifi-vector-icon-png-image_696445.jpg';
+//     } else {
+//         statusEle.innerText = "Ofline";
+//         imgEle.src = 'https://w7.pngwing.com/pngs/731/137/png-transparent-online-and-offline-android-indiana-angle-logo-black-thumbnail.png';
+//     }
+// }
+
+async function checkConnection() {
+    try {
+        const fetchResult = await fetch('https://images.unsplash.com/photo-1677583229794-69bedfca219c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=869&q=80?time=' + (new Date()).getTime());
+        imgEle.src = "https://png.pngtree.com/png-vector/20190223/ourmid/pngtree-wifi-vector-icon-png-image_696445.jpg";
+        mainContainer.style.backgroundColor = 'green';
+        return fetchResult.status >= 200 && fetchResult.status < 300; 
+    }
+    catch(error) {
+        statusEle.textContent = 'OOps!!! Your internet connection is down';
+        imgEle.src = "data:image/jpeg;base64,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";
+        mainContainer.style.backgroundColor = 'rgb(76 29 149)';
+    }
+}
+
+// Monitor the connection 
+setInterval(async () => {
+    const result = await checkConnection();
+    if(result) {
+        statusEle.textContent = "You are online CONNECTION IS GOOD!!";
+        
+    }
+},5000);
+
+window.addEventListener('load', async (event) => {
+    if(checkConnection()) {
+        statusEle.textContent = "Checking the connection!!";
+       
+    } else {
+        statusEle.textContent = "You are offline!!"; 
+       
+    }
+});
+
